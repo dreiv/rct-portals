@@ -17,16 +17,13 @@ class App extends Component {
 		return (
 			<main>
 				<section className="chat-window">
-					{/* this will be our portal element */}
 					<header ref={ref => (this.header = ref)} />
 
-					{/* the message window */}
 					<Chat comments={this.state.comments} />
 
-					{/* the meat of this app is within the TextInput */}
 					<TextInput
 						handleSubmit={this.handleSubmit}
-						getRef={() => this.header} // this will allow us to retrieve the ref for creating the portal
+						getRef={() => this.header}
 					/>
 				</section>
 			</main>
