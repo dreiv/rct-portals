@@ -7,7 +7,7 @@ export default class TextInput extends Component {
 	state = {
 		value: '',
 		emojis: [],
-		potentialShortname: null,
+		potentialShortName: null,
 	}
 
 	// capture potential emoji shortcodes for autocomplete
@@ -16,13 +16,11 @@ export default class TextInput extends Component {
 	// capture all potential completed emoji shortcodes
 	emojiCompleteTest = new RegExp(/:(.*?):/g)
 
-	handleChange = event => {
-		const { value } = event.currentTarget
-
+	handleChange = ({ currentTarget: { value } }) => {
 		if (this.emojiAutoComplete.test(value)) {
-			// create regex based on expected shortname value
-			const potentialShortname = value.split(':').slice(-1)[0]
-			const regex = new RegExp(`^:${potentialShortname}`)
+			// create regex based on expected shortName value
+			const potentialShortName = value.split(':').slice(-1)[0]
+			const regex = new RegExp(`^:${potentialShortName}`)
 
 			// filter emojis by shortnames
 			const matchingEmojis = emojis.filter(({ shortname }) =>
@@ -32,7 +30,7 @@ export default class TextInput extends Component {
 			this.setState({
 				emojis: matchingEmojis,
 				value,
-				potentialShortname,
+				potentialShortName,
 			})
 		} else {
 			this.setState({
@@ -43,14 +41,15 @@ export default class TextInput extends Component {
 	}
 
 	handleSelect = emoji => {
-		const { value, potentialShortname } = this.state
-		const nextValue = value.split(`:${potentialShortname}`).join(emoji)
-		this.setState({
-			value: nextValue,
-			emojis: [],
-			potentialShortname: null,
-		})
-		this.textarea.focus()
+		this.setState(({ value, potentialShortName }) => {
+			const nextValue = value.split(`:${potentialShortName}`).join(emoji)
+
+			return {
+				value: nextValue,
+				emojis: [],
+				potentialShortname: null,
+			}
+		}, this.textarea.focus())
 	}
 
 	handleKeyDown = event => {
@@ -112,7 +111,9 @@ export default class TextInput extends Component {
 					onKeyDown={this.handleKeyDown}
 					onChange={this.handleChange}
 					value={value}
-					ref={ref => (this.textarea = ref)}
+					ref={ref => {
+						this.textarea = ref
+					}}
 				/>
 				{showEmoji &&
 					ReactDOM.createPortal(

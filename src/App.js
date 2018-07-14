@@ -28,27 +28,26 @@ class App extends Component {
 	}
 
 	fakeResponse = () => {
-		const i = Math.floor(Math.random() * (responses.length - 1))
-		const response = responses[i]
+		const randomIndex = Math.floor(Math.random() * (responses.length - 1))
+		const response = responses[randomIndex]
 		this.addComment('bot', response)
 	}
 
 	addComment(author, text) {
-		const comments = [
-			...this.state.comments,
-			{
-				author,
-				text,
-			},
-		]
-		this.setState({ comments })
+		this.setState(prevState => ({
+			comments: prevState.comments.concat({ author, text }),
+		}))
 	}
 
 	render() {
 		return (
 			<main>
 				<section className="chat-window">
-					<header ref={ref => (this.header = ref)} />
+					<header
+						ref={ref => {
+							this.header = ref
+						}}
+					/>
 
 					<Chat comments={this.state.comments} />
 

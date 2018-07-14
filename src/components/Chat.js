@@ -8,16 +8,18 @@ export default class Chat extends Component {
 	render() {
 		const { comments } = this.props
 		return (
-			<div className="chat" ref={ref => (this.chat = ref)}>
-				{comments.map(({ author, text }, i) => {
-					const isMe = author === 'me'
+			<div
+				className="chat"
+				ref={ref => {
+					this.chat = ref
+				}}
+			>
+				{comments.map(({ author, text }, idx) => {
+					const avatar = author === 'me' ? '😎' : '🤖'
 
 					return (
-						<div
-							key={`comment-${i}`}
-							className={`comment ${isMe ? 'me' : 'bot'}`}
-						>
-							<span className="avatar">{isMe ? '😎' : '🤖'}</span>
+						<div key={idx} className={`comment ${author}`}>
+							<span className="avatar">{avatar}</span>
 							<p className="bubble">{text}</p>
 						</div>
 					)
