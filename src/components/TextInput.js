@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { emojis } from '../data/emojis'
 import { EmojiMenu } from './EmojiMenu'
+import './TextInput.css'
 
 export default class TextInput extends Component {
 	state = {
@@ -106,7 +107,7 @@ export default class TextInput extends Component {
 		const { getRef } = this.props
 		const showEmoji = emojis.length > 0
 		return (
-			<div className="text-input">
+			<div>
 				<textarea
 					onKeyDown={this.handleKeyDown}
 					onChange={this.handleChange}
